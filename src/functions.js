@@ -21,5 +21,37 @@ export const getMyNotes = () => {
   });
 };
 
+export const addNotes = (title, content) => {
+  const data = {
+    title: title,
+    content: content,
+  };
+  return fetch("https://notes-demo-backend.herokuapp.com/notes", {
+    method: "POST",
+    body: JSON.stringify(data),
+    credentials: "include",
+    mode: "cors",
+    headers: { "content-type": "application/json" },
+  });
+};
+
+export const deleteNote = (id) => {
+  return fetch(`https://notes-demo-backend.herokuapp.com/notes/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+    mode: "cors",
+  });
+};
+
+export const editNote = (noteId, data) => {
+  return fetch(`https://notes-demo-backend.herokuapp.com/notes/${noteId}`, {
+    method: "PUT",
+    credentials: "include",
+    mode: "cors",
+    body: JSON.stringify(data),
+    headers: { "content-type": "application/json" },
+  });
+};
+
 // POST  https://notes-demo-backend.herokuapp.com/notes
 // obje olarak title ve content yollanacak
