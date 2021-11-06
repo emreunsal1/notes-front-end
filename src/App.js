@@ -1,20 +1,25 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import { login } from "./functions";
 import Login from "./pages/Login";
 import Notes from "./pages/Notes";
+import { ThemeProvider, createTheme, Box } from "@mui/material";
+import "./style/app.scss";
 export default function App() {
+  const theme = createTheme({
+    palette: { mode: "dark" },
+  });
   return (
-    <div>
-      <Router>
-        <Route exact path="/">
-          <Login />
-        </Route>
-        <Route path="/notes">
-          <Notes />
-        </Route>
-      </Router>
-    </div>
+    <ThemeProvider theme={theme}>
+      <div className="app">
+        <Router>
+          <Route exact path="/">
+            <Login />
+          </Route>
+          <Route path="/notes">
+            <Notes />
+          </Route>
+        </Router>
+      </div>
+    </ThemeProvider>
   );
 }

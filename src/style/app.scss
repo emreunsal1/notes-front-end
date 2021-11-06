@@ -1,0 +1,51 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap");
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+*::-webkit-scrollbar,
+* ::-webkit-scrollbar {
+  background-color: rgb(43, 43, 43);
+}
+*::-webkit-scrollbar-corner,
+* ::-webkit-scrollbar-corner {
+  background-color: rgb(43, 43, 43);
+}
+
+*::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+*::-webkit-scrollbar-thumb,
+* ::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background-color: rgb(107, 107, 107);
+  min-height: 24px;
+  border: 3px solid rgb(43, 43, 43);
+}
+
+body {
+  font-family: "Roboto";
+  background-color: #121212;
+  color: #fff;
+}
+
+.app {
+  width: 1000px;
+  max-width: 90%;
+  margin: 0 auto;
+  .login-container {
+    button {
+      width: 40%;
+      display: block;
+      margin-left: auto;
+    }
+  }
+  .float-button {
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+  }
+}

@@ -1,22 +1,25 @@
 import React, { useEffect, useState } from "react";
 import NoteItem from "../components/NoteItem";
-import { getMyNotes, addNotes, deleteNote } from "../functions";
+import { getMyNotes, addNotes } from "../functions";
+import Box from "@mui/material/Box";
+import AddNotes from "../components/AddNotes";
+import Grid from "@mui/material/Grid";
+import Modal from "@mui/material/Modal";
+import Typography from "@mui/material/Typography";
+import Fab from "@mui/material/Fab";
+import AddIcon from "@mui/icons-material/Add";
 
 export default function Notes() {
   const [notes, setNotes] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     myNotes();
   }, []);
 
-  const newNote = async (event) => {
-    event.preventDefault();
-    const title = event.target.title.value;
-    const content = event.target.content.value;
-    const response = await addNotes(title, content);
-    const data = await response.json();
-    const addedNote = data.note;
-    setNotes([...notes, addedNote]);
+  const onSubmit = (newNote) => {
+    setNotes([newNote, ...notes]);
+    setIsModalOpen(false);
   };
 
   const onDelete = (deletedNote) => {
@@ -28,20 +31,36 @@ export default function Notes() {
     const response = await getMyNotes();
     const data = await response.json();
     setNotes(data);
+    console.log(data);
   };
 
   return (
-    <div>
-      <form onSubmit={newNote}>
-        <input type="text" name="title"></input>
-        <input type="text" name="content"></input>
-        <button type="submit">Note Add</button>
-      </form>
-      <ul>
+    <Box>
+      <Typography variant="h1" sx={{ my: 3 }}>
+        Your Sticky Notes
+      </Typography>
+      <Grid alignItems={"stretch"} container spacing={2}>
         {notes.map((note, index) => (
-          <NoteItem note={note} key={index} onDelete={onDelete} />
+          <Grid item xs={4}>
+            <NoteItem note={note} key={index} onDelete={onDelete} />
+          </Grid>
         ))}
-      </ul>
-    </div>
+      </Grid>
+      <Modal
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <AddNotes onSubmit={onSubmit} />
+      </Modal>
+      <Fab
+        className="float-button"
+        color="primary"
+        onClick={() => setIsModalOpen(true)}
+      >
+        <AddIcon />
+      </Fab>
+    </Box>
   );
 }
