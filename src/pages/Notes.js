@@ -29,6 +29,7 @@ export default function Notes() {
   }, []);
 
   const onSubmit = (newNote) => {
+    setFilteredNotes([newNote, ...notes]);
     setNotes([newNote, ...notes]);
     setIsModalOpen(false);
     setIsSuccess(true);
