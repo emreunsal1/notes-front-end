@@ -14,6 +14,20 @@ export const login = (username, password) => {
   });
 };
 
+export const register = (username, password) => {
+  const data = {
+    username: username,
+    password: password,
+  };
+  return fetch("https://notes-demo-backend.herokuapp.com/register", {
+    method: "POST",
+    mode: "cors",
+    headers: { "content-type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify(data),
+  });
+};
+
 export const getMyNotes = () => {
   return fetch("https://notes-demo-backend.herokuapp.com/me/notes", {
     mode: "cors",

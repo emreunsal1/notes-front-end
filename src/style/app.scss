@@ -38,7 +38,6 @@ body {
   margin: 0 auto;
   .login-container {
     button {
-      width: 40%;
       display: block;
       margin-left: auto;
     }
@@ -47,5 +46,11 @@ body {
     position: fixed;
     right: 30px;
     bottom: 30px;
+  }
+  .profile-button {
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    cursor: pointer;
   }
 }

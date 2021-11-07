@@ -8,10 +8,18 @@ import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
+import PersonIcon from "@mui/icons-material/Person";
+import { useHistory } from "react-router-dom";
+import { IconButton } from "@mui/material";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 export default function Notes() {
   const [notes, setNotes] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const history = useHistory();
 
   useEffect(() => {
     myNotes();
@@ -20,6 +28,7 @@ export default function Notes() {
   const onSubmit = (newNote) => {
     setNotes([newNote, ...notes]);
     setIsModalOpen(false);
+    setIsSuccess(true);
   };
 
   const onDelete = (deletedNote) => {
@@ -36,6 +45,16 @@ export default function Notes() {
 
   return (
     <Box>
+      <Snackbar
+        open={isSuccess}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        autoHideDuration={2000}
+        onClose={() => setIsSuccess(false)}
+      >
+        <Alert variant="filled" severity="success">
+          Note added successfully
+        </Alert>
+      </Snackbar>
       <Typography variant="h1" sx={{ my: 3 }}>
         Your Sticky Notes
       </Typography>
@@ -61,6 +80,14 @@ export default function Notes() {
       >
         <AddIcon />
       </Fab>
+      <IconButton
+        size="large"
+        sx={{ position: "fixed", top: 30, right: 30, cursor: "pointer" }}
+        onClick={() => history.push("/profile")}
+        color="primary"
+      >
+        <PersonIcon fontSize="inherit" />
+      </IconButton>
     </Box>
   );
 }

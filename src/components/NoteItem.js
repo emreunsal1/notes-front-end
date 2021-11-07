@@ -105,6 +105,7 @@ export default function NoteItem({ note, onDelete }) {
           </Typography>
         ) : (
           <TextField
+            sx={{ mb: 3 }}
             fullWidth
             variant="outlined"
             label="Title"
@@ -143,7 +144,7 @@ export default function NoteItem({ note, onDelete }) {
           </>
         ) : (
           <TextField
-            sx={{ mt: 3 }}
+            sx={{ maxHeight: 350, overflowY: "scroll", pt: 1 }}
             fullWidth
             variant="outlined"
             label="Content"
