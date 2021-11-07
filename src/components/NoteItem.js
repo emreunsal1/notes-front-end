@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Fragment } from "react/cjs/react.production.min";
-import { deleteNote, editNote } from "../functions";
+import { deleteNote, editNote, updateFavorited } from "../functions";
 import CustomButton from "./CustomButton";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import Fab from "@mui/material/Fab";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -27,10 +29,13 @@ export default function NoteItem({ note, onDelete }) {
   const [noteContent, setNoteContent] = useState(note.content);
   const [menuOpened, setMenuOpened] = useState(false);
   const [anchor, setAnchor] = useState(null);
+  const [isLiked, setIsLiked] = useState(note.favorited);
+  const [favoriteButtonDisabled, setFavoriteButtonDisabled] = useState(false);
 
   useEffect(() => {
     setNoteTitle(note.title);
     setNoteContent(note.content);
+    setIsLiked(note.favorited);
   }, [note]);
 
   const deleteNoteOnClick = async (id) => {
@@ -42,6 +47,17 @@ export default function NoteItem({ note, onDelete }) {
     onDelete(deletedNote);
     setMenuOpened(false);
   };
+  const upddateNoteFavorite = async () => {
+    setFavoriteButtonDisabled(true);
+    const response = await updateFavorited(note._id, !isLiked);
+    const data = await response.json();
+    if (data.success) {
+      const currentState = data.note.favorited;
+      setIsLiked(currentState);
+    }
+    setFavoriteButtonDisabled(false);
+  };
+
   const editedNote = async () => {
     setButtonDisabled(true);
     const noteInfomation = {
@@ -66,15 +82,26 @@ export default function NoteItem({ note, onDelete }) {
         action={
           <div>
             {!isEdit && (
-              <IconButton
-                onClick={(e) => {
-                  setMenuOpened(true);
-                  setAnchor(e.currentTarget);
-                }}
-              >
-                <MoreVert />
-              </IconButton>
+              <>
+                <IconButton
+                  onClick={() => upddateNoteFavorite()}
+                  disabled={favoriteButtonDisabled}
+                  sx={{ color: isLiked ? "red" : "gray" }}
+                  size="small"
+                >
+                  <FavoriteIcon />
+                </IconButton>
+                <IconButton
+                  onClick={(e) => {
+                    setMenuOpened(true);
+                    setAnchor(e.currentTarget);
+                  }}
+                >
+                  <MoreVert />
+                </IconButton>
+              </>
             )}
+
             <Menu
               id="basic-menu"
               anchorEl={anchor}
@@ -98,9 +125,15 @@ export default function NoteItem({ note, onDelete }) {
           </div>
         }
       />
-      <CardContent justifyContent="space-between">
+      <CardContent justifyContent="space-between" sx={{ height: "100%" }}>
         {!isEdit ? (
-          <Typography noWrap gutterBottom variant="h5" component="div">
+          <Typography
+            noWrap
+            gutterBottom
+            variant="h5"
+            component="div"
+            sx={{ mr: "70px" }}
+          >
             {noteTitle}
           </Typography>
         ) : (
@@ -120,11 +153,16 @@ export default function NoteItem({ note, onDelete }) {
                 variant="body2"
                 gutterBottom
                 color="text.secondary"
-                sx={{ maxHeight: 350, overflowY: "scroll" }}
+                sx={{
+                  minHeight: 350,
+                  maxHeight: 350,
+                  overflowY: "scroll",
+                  mb: "36px",
+                }}
               >
                 {noteContent}
               </Typography>
-              <Box>
+              <Box sx={{ position: "absolute", bottom: "12px", left: "12px" }}>
                 <Typography
                   variant="caption"
                   display="block"
@@ -146,7 +184,7 @@ export default function NoteItem({ note, onDelete }) {
           <TextField
             sx={{ maxHeight: 350, overflowY: "scroll", pt: 1 }}
             fullWidth
-            variant="outlined"
+            variant="standard"
             label="Content"
             multiline
             value={noteContent}

@@ -9,7 +9,7 @@ export const login = (username, password) => {
     method: "POST",
     mode: "cors",
     headers: { "content-type": "application/json" },
-    credentials: "include",
+    // credentials: "include",
     body: JSON.stringify(data),
   });
 };
@@ -67,5 +67,27 @@ export const editNote = (noteId, data) => {
   });
 };
 
+export const updateFavorited = (noteId, bool) => {
+  const data = {
+    favorited: bool,
+  };
+  return fetch(
+    `https://notes-demo-backend.herokuapp.com/notes/favorite/${noteId}`,
+    {
+      method: "PUT",
+      credentials: "include",
+      mode: "cors",
+      body: JSON.stringify(data),
+      headers: { "content-type": "application/json" },
+    }
+  );
+};
+
+export const logOut = () => {
+  return fetch("https://notes-demo-backend.herokuapp.com/logout", {
+    method: "POST",
+    mode: "cors",
+  });
+};
 // POST  https://notes-demo-backend.herokuapp.com/notes
 // obje olarak title ve content yollanacak
