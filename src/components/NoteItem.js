@@ -22,7 +22,7 @@ import { MoreVert, Delete, Edit } from "@mui/icons-material";
 import { height } from "@mui/system";
 import moment from "moment";
 
-export default function NoteItem({ note, onDelete }) {
+export default function NoteItem({ note, onDelete, onUpdate }) {
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [noteTitle, setNoteTitle] = useState(note.title);
@@ -42,6 +42,7 @@ export default function NoteItem({ note, onDelete }) {
     setButtonDisabled(true);
     const response = await deleteNote(id);
     const data = await response.data;
+    onUpdate();
     setButtonDisabled(false);
     const deletedNote = data.data;
     onDelete(deletedNote);
@@ -51,6 +52,8 @@ export default function NoteItem({ note, onDelete }) {
     setFavoriteButtonDisabled(true);
     const response = await updateFavorited(note._id, !isLiked);
     const data = await response.data;
+    onUpdate();
+
     if (data.success) {
       const currentState = data.note.favorited;
       setIsLiked(currentState);

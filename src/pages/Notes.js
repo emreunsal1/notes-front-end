@@ -25,7 +25,7 @@ export default function Notes() {
   const history = useHistory();
 
   useEffect(() => {
-    myNotes();
+    fetchMyNotes();
   }, []);
 
   const onSubmit = (newNote) => {
@@ -38,9 +38,10 @@ export default function Notes() {
   const onDelete = (deletedNote) => {
     const newList = notes.filter((item) => item._id != deletedNote._id);
     setNotes(newList);
+    setFilteredNotes(newList);
   };
 
-  const myNotes = async () => {
+  const fetchMyNotes = async () => {
     const response = await getMyNotes();
     const data = await response.data;
     setNotes(data);
@@ -99,7 +100,12 @@ export default function Notes() {
       <Grid alignItems={"stretch"} container spacing={2}>
         {filteredNotes.map((note, index) => (
           <Grid item xs={4}>
-            <NoteItem note={note} key={index} onDelete={onDelete} />
+            <NoteItem
+              note={note}
+              key={index}
+              onDelete={onDelete}
+              onUpdate={fetchMyNotes}
+            />
           </Grid>
         ))}
       </Grid>
