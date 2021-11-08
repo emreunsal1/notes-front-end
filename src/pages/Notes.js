@@ -42,7 +42,7 @@ export default function Notes() {
 
   const myNotes = async () => {
     const response = await getMyNotes();
-    const data = await response.json();
+    const data = await response.data;
     setNotes(data);
     setFilteredNotes(data);
     console.log(data);
@@ -128,7 +128,7 @@ export default function Notes() {
           color: "red",
         }}
         onClick={async () => {
-          await logOut();
+          window.localStorage.clear();
           history.push("/");
         }}
       >

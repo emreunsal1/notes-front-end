@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { login } from "../functions";
+import { login, setAuthToken } from "../functions";
 import { useHistory, useLocation } from "react-router-dom";
 import LoadingButton from "@mui/lab/LoadingButton";
 import TextField from "@mui/material/TextField";
@@ -30,12 +30,17 @@ export default function Login() {
     const username = event.target.username.value;
     const password = event.target.password.value;
     const userData = await login(username, password);
+    const { token } = userData.data;
+    if (token) {
+      setAuthToken(token);
+    }
+
     if (userData.status != 200) {
       setLoadingButton(false);
       return setIsError(true);
     }
 
-    const data = await userData.json();
+    const data = await userData.data;
     if (data.token) {
       history.push("/notes");
     }

@@ -27,7 +27,7 @@ export default function AddNotes({ onSubmit }) {
     setLoadingButton(true);
 
     const response = await addNotes(noteTitle, noteContent);
-    const data = await response.json();
+    const data = await response.data;
     setLoadingButton(false);
     const addedNote = data.note;
 

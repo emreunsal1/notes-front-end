@@ -17,7 +17,7 @@ export default function Register() {
     const username = event.target.username.value;
     const password = event.target.password.value;
     const userData = await register(username, password);
-    const data = await userData.json();
+    const data = await userData.data;
     if (data.username) {
       history.push({
         pathname: "/",

@@ -41,7 +41,7 @@ export default function NoteItem({ note, onDelete }) {
   const deleteNoteOnClick = async (id) => {
     setButtonDisabled(true);
     const response = await deleteNote(id);
-    const data = await response.json();
+    const data = await response.data;
     setButtonDisabled(false);
     const deletedNote = data.data;
     onDelete(deletedNote);
@@ -50,7 +50,7 @@ export default function NoteItem({ note, onDelete }) {
   const upddateNoteFavorite = async () => {
     setFavoriteButtonDisabled(true);
     const response = await updateFavorited(note._id, !isLiked);
-    const data = await response.json();
+    const data = await response.data;
     if (data.success) {
       const currentState = data.note.favorited;
       setIsLiked(currentState);
@@ -65,7 +65,7 @@ export default function NoteItem({ note, onDelete }) {
       content: noteContent,
     };
     const response = await editNote(note._id, noteInfomation);
-    const data = await response.json();
+    const data = await response.data;
     setButtonDisabled(false);
     console.log(data);
     setIsEdit(!setIsEdit);

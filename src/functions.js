@@ -1,17 +1,31 @@
 import axios from "axios";
 
+const customAxios = axios.create({
+  baseURL: "https://notes-demo-backend.herokuapp.com",
+});
+customAxios.interceptors.request.use((config) => {
+  config.headers["authcookie"] = getAuthToken() || "";
+
+  return config;
+});
+
+customAxios.interceptors.response.use((config) => {
+  if (config.status === 401) {
+    clearAuthToken();
+  }
+  return config;
+});
+
+export const clearAuthToken = () => localStorage.clear();
+export const getAuthToken = () => localStorage.getItem("token");
+export const setAuthToken = (value) => localStorage.setItem("token", value);
+
 export const login = (username, password) => {
   const data = {
     username: username,
     password: password,
   };
-  return fetch("https://notes-demo-backend.herokuapp.com/login", {
-    method: "POST",
-    mode: "cors",
-    headers: { "content-type": "application/json" },
-    // credentials: "include",
-    body: JSON.stringify(data),
-  });
+  return customAxios.post("/login", data);
 };
 
 export const register = (username, password) => {
@@ -19,20 +33,11 @@ export const register = (username, password) => {
     username: username,
     password: password,
   };
-  return fetch("https://notes-demo-backend.herokuapp.com/register", {
-    method: "POST",
-    mode: "cors",
-    headers: { "content-type": "application/json" },
-    credentials: "include",
-    body: JSON.stringify(data),
-  });
+  return customAxios.post("/register", data);
 };
 
 export const getMyNotes = () => {
-  return fetch("https://notes-demo-backend.herokuapp.com/me/notes", {
-    mode: "cors",
-    credentials: "include",
-  });
+  return customAxios.get("/me/notes");
 };
 
 export const addNotes = (title, content) => {
@@ -40,47 +45,22 @@ export const addNotes = (title, content) => {
     title: title,
     content: content,
   };
-  return fetch("https://notes-demo-backend.herokuapp.com/notes", {
-    method: "POST",
-    body: JSON.stringify(data),
-    credentials: "include",
-    mode: "cors",
-    headers: { "content-type": "application/json" },
-  });
+  return customAxios.post("/notes", data);
 };
 
 export const deleteNote = (id) => {
-  return fetch(`https://notes-demo-backend.herokuapp.com/notes/${id}`, {
-    method: "DELETE",
-    credentials: "include",
-    mode: "cors",
-  });
+  return customAxios.delete(`/notes/${id}`);
 };
 
 export const editNote = (noteId, data) => {
-  return fetch(`https://notes-demo-backend.herokuapp.com/notes/${noteId}`, {
-    method: "PUT",
-    credentials: "include",
-    mode: "cors",
-    body: JSON.stringify(data),
-    headers: { "content-type": "application/json" },
-  });
+  return customAxios.put(`/notes/${noteId}`, data);
 };
 
 export const updateFavorited = (noteId, bool) => {
   const data = {
     favorited: bool,
   };
-  return fetch(
-    `https://notes-demo-backend.herokuapp.com/notes/favorite/${noteId}`,
-    {
-      method: "PUT",
-      credentials: "include",
-      mode: "cors",
-      body: JSON.stringify(data),
-      headers: { "content-type": "application/json" },
-    }
-  );
+  return customAxios.put(`/notes/favorite/${noteId}`, data);
 };
 
 export const logOut = () => {
