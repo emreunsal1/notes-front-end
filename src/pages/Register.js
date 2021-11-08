@@ -3,14 +3,13 @@ import { register } from "../functions";
 import { useHistory } from "react-router-dom";
 import LoadingButton from "@mui/lab/LoadingButton";
 import TextField from "@mui/material/TextField";
-import { Link as RouterLink } from "react-router-dom";
-import { Button, Typography } from "@mui/material";
 
 export default function Register() {
   const history = useHistory();
   const [loadingButton, setLoadingButton] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
   const onSubmit = async (event) => {
     event.preventDefault();
     setLoadingButton(true);

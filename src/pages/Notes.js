@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import NoteItem from "../components/NoteItem";
-import { getMyNotes, addNotes, logOut } from "../functions";
+import { getMyNotes } from "../functions";
 import Box from "@mui/material/Box";
 import AddNotes from "../components/AddNotes";
 import Grid from "@mui/material/Grid";
@@ -19,7 +19,6 @@ export default function Notes() {
   const [notes, setNotes] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [favoritesFiltered, setFavoritesFiltered] = useState(false);
   const [filteredNotes, setFilteredNotes] = useState([]);
 
   const history = useHistory();
@@ -36,7 +35,7 @@ export default function Notes() {
   };
 
   const onDelete = (deletedNote) => {
-    const newList = notes.filter((item) => item._id != deletedNote._id);
+    const newList = notes.filter((item) => item._id !== deletedNote._id);
     setNotes(newList);
     setFilteredNotes(newList);
   };
@@ -46,7 +45,6 @@ export default function Notes() {
     const data = await response.data;
     setNotes(data);
     setFilteredNotes(data);
-    console.log(data);
   };
 
   const filterOnClick = (e) => {
@@ -55,14 +53,6 @@ export default function Notes() {
     }
     setFilteredNotes(notes);
   };
-  function deleteAllCookies() {
-    const cookies = document.cookie.split(";");
-    for (const cookie of cookies) {
-      const eqPos = cookie.indexOf("=");
-      const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-      document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-    }
-  }
 
   return (
     <Box>
@@ -76,7 +66,11 @@ export default function Notes() {
           Note added successfully
         </Alert>
       </Snackbar>
-      <Typography variant="h1" sx={{ my: 3 }}>
+      <Typography
+        variant="h1"
+        md={{ my: 3 }}
+        sx={{ fontSize: "40px", my: 2, mr: "50px" }}
+      >
         Your Sticky Notes
       </Typography>
       <Box sx={{ mb: 3 }}>
@@ -99,7 +93,7 @@ export default function Notes() {
       </Box>
       <Grid alignItems={"stretch"} container spacing={2}>
         {filteredNotes.map((note, index) => (
-          <Grid item xs={4}>
+          <Grid item xs={12} md={4}>
             <NoteItem
               note={note}
               key={index}

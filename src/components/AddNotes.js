@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 import { addNotes } from "../functions";
-import Typography from "@mui/material/Typography";
+
 export default function AddNotes({ onSubmit }) {
   const [loadingButton, setLoadingButton] = useState(false);
   const [noteTitle, setNoteTitle] = useState("");
@@ -20,6 +21,17 @@ export default function AddNotes({ onSubmit }) {
     boxShadow: 10,
     borderRadius: 1,
     p: 8,
+  };
+  const responsiveStyle = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "90%",
+    bgcolor: "background.paper",
+    boxShadow: 10,
+    borderRadius: 1,
+    p: 3,
   };
 
   const newNote = async (event) => {
@@ -37,7 +49,7 @@ export default function AddNotes({ onSubmit }) {
   };
 
   return (
-    <Box sx={style}>
+    <Box sx={responsiveStyle} md={style}>
       <Typography variant="h2" sx={{ mb: 2 }}>
         Add Note
       </Typography>

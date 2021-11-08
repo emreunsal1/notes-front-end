@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -7,10 +7,9 @@ import {
 } from "react-router-dom";
 import Login from "./pages/Login";
 import Notes from "./pages/Notes";
-import { ThemeProvider, createTheme, Box } from "@mui/material";
+import { ThemeProvider, createTheme } from "@mui/material";
 
 import "./style/app.scss";
-import Profile from "./pages/Profile";
 import Register from "./pages/Register";
 import { getAuthToken } from "./functions";
 
@@ -20,8 +19,8 @@ function useAuth() {
 
   React.useEffect(() => {
     if (
-      location.pathname != "/" &&
-      location.pathname != "/register" &&
+      location.pathname !== "/" &&
+      location.pathname !== "/register" &&
       (!getAuthToken() || getAuthToken().length == 0)
     ) {
       history.push("/");
@@ -48,9 +47,6 @@ export default function App() {
             </Route>
             <Route path="/notes">
               <Notes />
-            </Route>
-            <Route path="/profile">
-              <Profile />
             </Route>
             <Route path="/register">
               <Register />

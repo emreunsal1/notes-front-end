@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Fragment } from "react/cjs/react.production.min";
-import { deleteNote, editNote, updateFavorited } from "../functions";
-import CustomButton from "./CustomButton";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import Fab from "@mui/material/Fab";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import TextField from "@mui/material/TextField";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -19,8 +14,9 @@ import {
   Box,
 } from "@mui/material";
 import { MoreVert, Delete, Edit } from "@mui/icons-material";
-import { height } from "@mui/system";
 import moment from "moment";
+
+import { deleteNote, editNote, updateFavorited } from "../functions";
 
 export default function NoteItem({ note, onDelete, onUpdate }) {
   const [buttonDisabled, setButtonDisabled] = useState(false);
@@ -48,6 +44,7 @@ export default function NoteItem({ note, onDelete, onUpdate }) {
     onDelete(deletedNote);
     setMenuOpened(false);
   };
+
   const upddateNoteFavorite = async () => {
     setFavoriteButtonDisabled(true);
     const response = await updateFavorited(note._id, !isLiked);
@@ -67,10 +64,8 @@ export default function NoteItem({ note, onDelete, onUpdate }) {
       title: noteTitle,
       content: noteContent,
     };
-    const response = await editNote(note._id, noteInfomation);
-    const data = await response.data;
+    await editNote(note._id, noteInfomation);
     setButtonDisabled(false);
-    console.log(data);
     setIsEdit(!setIsEdit);
   };
 
