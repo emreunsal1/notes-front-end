@@ -6,7 +6,7 @@ Techs:
 - **React**
 - **MUI**
 
-Demo:[sticky-notes-demo](htpps://notes-front-end.vercel.app)
+Demo: [sticky-notes-demo](https://notes-front-end.vercel.app)
 
 
 ---
